@@ -6,23 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "flow_version")
-public class FlowVersion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class FlowVersion implements Serializable {
+    @EmbeddedId
     @ManyToOne
     @JoinColumn(name="flow_id", nullable=false)
     private Flow flow;
-    private String version;
+    @Id
+    private int version;
     private String comment;
-    @Column(name = "flow_content")
-    private String flowContent;
+    private String content;
+    @Column(name = "updated_at")
+    private Timestamp updateAt;
+    @Column(name = "updated_by")
+    private String updatedBy;
 
 
 }

@@ -4,17 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
+
+
+@Entity
+@Table(name = "flow")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "flow")
+@Embeddable
 public class Flow {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,11 +24,27 @@ public class Flow {
     private long flowId;
     @Column(name = "flow_name")
     private String flowName;
-    @Column(name = "flow_description")
-    private String flowDescription;
-    @OneToMany(mappedBy = "flow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<FlowVersion> flowVersions;
+    private String description;
+    @Column(name = "version_count")
+    private String versionCount;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Column(name = "created_by")
+    private String createdBy;
+    @Column(name = "updated_at")
+    private Timestamp updateAt;
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @OneToMany(mappedBy = "flow", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<FlowVersion> flowVersions = new HashSet<>();
+
+//    public void addFirstVersion(FlowVersion flowVersion){
+//        flowVersions.add(flowVersion);
+//        flowVersion.setFlow(this);
+//    }
+
+
 }
 
 
