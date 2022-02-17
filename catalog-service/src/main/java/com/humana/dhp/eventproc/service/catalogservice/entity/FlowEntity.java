@@ -1,4 +1,4 @@
-package com.humana.dhp.eventproc.service.catalogservice.model;
+package com.humana.dhp.eventproc.service.catalogservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,12 +16,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Embeddable
-public class Flow {
+public class FlowEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "flow_id")
-    private long flowId;
+    private Long flowId;
     @Column(name = "flow_name")
     private String flowName;
     private String description;
@@ -36,13 +35,10 @@ public class Flow {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @OneToMany(mappedBy = "flow", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<FlowVersion> flowVersions = new HashSet<>();
+    @OneToMany(mappedBy = "id.flow",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FlowVersionEntity> flowVersions = new HashSet<>();
 
-//    public void addFirstVersion(FlowVersion flowVersion){
-//        flowVersions.add(flowVersion);
-//        flowVersion.setFlow(this);
-//    }
+
 
 
 }
