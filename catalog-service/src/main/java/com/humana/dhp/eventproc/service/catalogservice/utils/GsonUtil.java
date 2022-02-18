@@ -5,19 +5,19 @@ import com.google.gson.Gson;
 public class GsonUtil {
     private static final Gson GSON = new Gson();
 
-    public static <T> T convert(Object o,Class<T> clazz){
+    public static <T> T convert(Object o, Class<T> clazz) {
         try {
             String json = GSON.toJson(o);
-            return GSON.fromJson(json,clazz);
-        }catch (Exception ex){
+            return GSON.fromJson(json, clazz);
+        } catch (Exception ex) {
             return null;
         }
     }
 
-    public static String convertObjToString(Object o){
+    public static String convertObjToString(Object o) {
         try {
             return GSON.toJson(o);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }

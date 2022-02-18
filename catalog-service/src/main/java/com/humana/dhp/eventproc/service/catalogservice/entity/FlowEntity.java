@@ -32,16 +32,9 @@ public class FlowEntity {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @OneToMany(mappedBy = "flow",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flow", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<FlowVersionEntity> flowVersions = new HashSet<>();
 
-//    public Set<FlowVersionEntity> getFlowVersions() {
-//        return flowVersions;
-//    }
-//
-//    public void setFlowVersions(Set<FlowVersionEntity> flowVersions) {
-//        this.flowVersions = flowVersions;
-//    }
 }
 
 

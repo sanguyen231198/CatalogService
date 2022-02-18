@@ -22,8 +22,6 @@ public class FlowVersionEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="flow_id",nullable = false)
     private FlowEntity flow;
-//    @EmbeddedId
-//    private Pk id;
     @Id
     private int version;
     private String comment;
@@ -43,53 +41,6 @@ public class FlowVersionEntity {
                 ", updatedBy='" + updatedBy + '\'' +
                 '}';
     }
-
-    //    @Embeddable
-//    public static class Pk implements Serializable{
-//        @ManyToOne
-//        @JoinColumn(name="flow_id")
-//        private FlowEntity flow;
-//        private int version;
-//
-//        public FlowEntity getFlow() {
-//            return flow;
-//        }
-//
-//        public void setFlow(FlowEntity flow) {
-//            this.flow = flow;
-//        }
-//
-//        public int getVersion() {
-//            return version;
-//        }
-//
-//        public void setVersion(int version) {
-//            this.version = version;
-//        }
-//
-//        public Pk(FlowEntity flow, int version) {
-//            this.flow = flow;
-//            this.version = version;
-//        }
-//
-//        public Pk() {
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            if (this == o) return true;
-//            if (o == null || getClass() != o.getClass()) return false;
-//            Pk that = (Pk) o;
-//            return version == that.version && Objects.equals(flow, that.flow);
-//        }
-//
-//        @Override
-//        public int hashCode() {
-//            return Objects.hash(flow, version);
-//        }
-//    }
-
-
 }
 @AllArgsConstructor
 @NoArgsConstructor

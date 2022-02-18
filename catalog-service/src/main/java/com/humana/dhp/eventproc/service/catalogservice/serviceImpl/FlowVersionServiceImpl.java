@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class FlowVersionServiceImpl implements FlowVersionService {
     @Autowired
     FlowVersionRepository flowVersionRepository;
+
     @Override
     public FlowVersionEntity createFlowVersion(FlowVersionEntity flowVersion) {
         return flowVersionRepository.save(flowVersion);
