@@ -34,34 +34,18 @@ public class FlowServiceImpl implements FlowService {
         flowEntity.setUpdateAt(flowTimestamp);
         flowEntity.setCreatedBy("abc");
         flowEntity.setUpdatedBy("abc");
-        Set<FlowVersionEntity> flowVersionEntities = new HashSet<>();
+
         FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowModel.getFlowVersion(),FlowVersionEntity.class);
-        FlowVersionEntity.Pk pk = flowVersionEntity.getId();
-        pk.setVersion(1);
-//        flowVersionEntity.setVersion(1);
-        flowVersionEntity.setId(pk);
-        flowVersionEntities.add(flowVersionEntity);
-        flowEntity.setFlowVersions(flowVersionEntities);
-        System.out.println(GsonUtil.convertObjToString(flowEntity));
+        flowVersionEntity.setVersion(1);
+        flowVersionEntity.setUpdateAt(flowTimestamp);
+        flowVersionEntity.setUpdatedBy("abc");
+        flowVersionEntity.setFlow(flowEntity);
+        System.out.println("FlowVersionEntity: "+flowVersionEntity.toString());
+
+        flowEntity.getFlowVersions().add(flowVersionEntity);
         flowRepository.save(flowEntity);
         return ResponseUtil.getSuccess();
-//        Timestamp flowTimestamp = new Timestamp(System.currentTimeMillis());
-//        flow.setCreatedAt(flowTimestamp);
-//        flow.setUpdateAt(flowTimestamp);
-//        Set<FlowVersion> flowVersions = new HashSet<>();
 
-//        FlowVersion flowVersion = new FlowVersion();
-
-//        flowVersion.setComment("Initial version");
-//        flowVersion.setDeploymentCount(0);
-//        flowVersion.setVersion(1);
-//        flow.addFirstVersion(flowVersion);
-//        flowVersion.setFlow(flow);
-//        Timestamp flowVersionTimestamp = new Timestamp(System.currentTimeMillis());
-//        flowVersion.setTimestamp(flowVersionTimestamp);
-//        flowVersions.add(flowVersionService.createFlowVersion(flowVersion));
-//        flow.setFlowVersions(flowVersions);
-//        return flowRepository.save(flow);
     }
 
 

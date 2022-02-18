@@ -18,17 +18,14 @@ import java.util.Objects;
 @Table(name = "flow_version")
 @IdClass(FlowVersionId.class)
 public class FlowVersionEntity {
-/*    @Id
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-////    @JoinColumns({
-////            @JoinColumn(name="flow_id", nullable=true, referencedColumnName = "") })
-//    @JoinColumn(name="flow_id",nullable = false, referencedColumnName="flow_id")
     @JoinColumn(name="flow_id",nullable = false)
-    private FlowEntity flow;*/
-    @EmbeddedId
-    private Pk id;
-//    @Id
-//    private Integer version;
+    private FlowEntity flow;
+//    @EmbeddedId
+//    private Pk id;
+    @Id
+    private int version;
     private String comment;
     private String content;
     @Column(name = "updated_at")
@@ -36,76 +33,69 @@ public class FlowVersionEntity {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Embeddable
-    public static class Pk implements Serializable{
-        @ManyToOne
-        @JoinColumn(name="flow_id")
-        private FlowEntity flow;
-        private int version;
-
-        public FlowEntity getFlow() {
-            return flow;
-        }
-
-        public void setFlow(FlowEntity flow) {
-            this.flow = flow;
-        }
-
-        public int getVersion() {
-            return version;
-        }
-
-        public void setVersion(int version) {
-            this.version = version;
-        }
-
-        public Pk(FlowEntity flow, int version) {
-            this.flow = flow;
-            this.version = version;
-        }
-
-        public Pk() {
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Pk that = (Pk) o;
-            return version == that.version && Objects.equals(flow, that.flow);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(flow, version);
-        }
+    @Override
+    public String toString() {
+        return "FlowVersionEntity{" +
+                "version=" + version +
+                ", comment='" + comment + '\'' +
+                ", content='" + content + '\'' +
+                ", updateAt=" + updateAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        FlowVersionEntity that = (FlowVersionEntity) o;
-//        return Objects.equals(flow, that.flow) && Objects.equals(version, that.version) && Objects.equals(comment, that.comment) && Objects.equals(content, that.content) && Objects.equals(updateAt, that.updateAt) && Objects.equals(updatedBy, that.updatedBy);
-//    }
+    //    @Embeddable
+//    public static class Pk implements Serializable{
+//        @ManyToOne
+//        @JoinColumn(name="flow_id")
+//        private FlowEntity flow;
+//        private int version;
 //
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(flow, version, comment, content, updateAt, updatedBy);
+//        public FlowEntity getFlow() {
+//            return flow;
+//        }
+//
+//        public void setFlow(FlowEntity flow) {
+//            this.flow = flow;
+//        }
+//
+//        public int getVersion() {
+//            return version;
+//        }
+//
+//        public void setVersion(int version) {
+//            this.version = version;
+//        }
+//
+//        public Pk(FlowEntity flow, int version) {
+//            this.flow = flow;
+//            this.version = version;
+//        }
+//
+//        public Pk() {
+//        }
+//
+//        @Override
+//        public boolean equals(Object o) {
+//            if (this == o) return true;
+//            if (o == null || getClass() != o.getClass()) return false;
+//            Pk that = (Pk) o;
+//            return version == that.version && Objects.equals(flow, that.flow);
+//        }
+//
+//        @Override
+//        public int hashCode() {
+//            return Objects.hash(flow, version);
+//        }
 //    }
-}
 
+
+}
+@AllArgsConstructor
+@NoArgsConstructor
 class FlowVersionId implements Serializable{
     private FlowEntity flow;
     private int version;
-
-    public FlowVersionId(FlowEntity flow, int version) {
-        this.flow = flow;
-        this.version = version;
-    }
-
-    public FlowVersionId() {
-    }
 
     @Override
     public boolean equals(Object o) {
