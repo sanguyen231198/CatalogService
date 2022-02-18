@@ -42,5 +42,11 @@ public class FlowServiceImpl implements FlowService {
 
     }
 
+    @Override
+    public FlowEntity findOneByFlowId(long flowId) {
+        FlowEntity flowEntity=  flowRepository.findOneByFlowId(flowId);
+        return flowEntity;
+    }
+
 
 }
