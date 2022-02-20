@@ -9,9 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CatalogRequest extends BaseRequest {
+public class FlowVersionRequest {
     private String requestId;
     private String requestTime;
-    private FlowModel dataFlow;
-
+    private FlowVersionModel flowVersionModel;
 }

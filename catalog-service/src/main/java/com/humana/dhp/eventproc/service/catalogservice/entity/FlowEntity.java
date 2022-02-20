@@ -23,6 +23,8 @@ public class FlowEntity {
     @Column(name = "flow_name")
     private String flowName;
     private String description;
+    @Column(name = "count_version")
+    private int countVersion;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "created_by")

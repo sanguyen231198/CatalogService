@@ -3,9 +3,9 @@ package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
-import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
+import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
 import com.humana.dhp.eventproc.service.catalogservice.model.FlowVersionModel;
-import com.humana.dhp.eventproc.service.catalogservice.repository.FlowVersionRepository;
+import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowVersionService;
 import com.humana.dhp.eventproc.service.catalogservice.utils.GsonUtil;
@@ -18,25 +18,26 @@ import java.sql.Timestamp;
 @Service
 public class FlowVersionServiceImpl implements FlowVersionService {
     @Autowired
-    FlowVersionRepository flowVersionRepository;
+    FlowRepository flowRepository;
     @Autowired
     FlowService flowService;
 
-
     @Override
-    public CatalogResponse importFlowVersion(FlowVersionModel flowVersionModel) {
+    public BaseResponse importFlowVersion(long flowId, FlowVersionModel flowVersionModel) {
+        FlowEntity flowEntity = flowRepository.findOneByFlowId(flowId);
+        if (flowEntity == null){
+            return ResponseUtil.getFailed("Flow is not exists");
+        }
         Timestamp flowTimestamp = new Timestamp(System.currentTimeMillis());
         FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowVersionModel, FlowVersionEntity.class);
-        System.out.println(flowVersionEntity.getFlow().getFlowId());
-//
-//        FlowEntity flowEntity = flowService.findOneByFlowId(flowVersionEntity.getFlow().getFlowId());
-//        int version = flowVersionEntity.getVersion() + 1;
-
+        int version = flowEntity.getFlowVersions().size()+1;
+        flowVersionEntity.setVersion(version);
         flowVersionEntity.setUpdateAt(flowTimestamp);
         flowVersionEntity.setUpdatedBy("abc");
-
-        System.out.println("FlowVersionEntity: " + flowVersionEntity.toString());
-        flowVersionRepository.save(flowVersionEntity);
+        flowVersionEntity.setFlow(flowEntity);
+        flowEntity.getFlowVersions().add(flowVersionEntity);
+        flowEntity.setCountVersion(version);
+        flowRepository.save(flowEntity);
         return ResponseUtil.getSuccess();
     }
 }

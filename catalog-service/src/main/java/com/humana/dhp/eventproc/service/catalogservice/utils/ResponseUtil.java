@@ -1,12 +1,21 @@
 package com.humana.dhp.eventproc.service.catalogservice.utils;
 
+import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
 import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
 
 public class ResponseUtil {
-    public static CatalogResponse getSuccess() {
-        CatalogResponse catalogResponse = new CatalogResponse();
-        catalogResponse.setResponseCode("200");
-        catalogResponse.setResponseDescription("Success");
-        return catalogResponse;
+
+    public static BaseResponse getSuccess() {
+        BaseResponse baseResponse = new CatalogResponse();
+        baseResponse.setResponseCode("200");
+        baseResponse.setResponseDescription("Success");
+        return baseResponse;
+    }
+
+    public static BaseResponse getFailed(String message) {
+        BaseResponse baseResponse = new CatalogResponse();
+        baseResponse.setResponseCode("400");
+        baseResponse.setResponseDescription(message);
+        return baseResponse;
     }
 }
