@@ -25,7 +25,8 @@ public class FlowVersionEntity {
     @Id
     private int version;
     private String comment;
-    private String content;
+    @Lob
+    private byte[] content;
     @Column(name = "updated_at")
     private Timestamp updateAt;
     @Column(name = "updated_by")

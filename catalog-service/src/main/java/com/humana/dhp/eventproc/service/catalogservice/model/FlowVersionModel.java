@@ -14,7 +14,7 @@ import lombok.Setter;
 public class FlowVersionModel {
     private int version;
     private String comment;
-    private String content;
+    private byte[] content;
 }
 
 
