@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CatalogResponse extends BaseResponse{
+public class CatalogResponse {
     private String responseCode;
     private String responseDescription;
     private FlowModel dataFlow;

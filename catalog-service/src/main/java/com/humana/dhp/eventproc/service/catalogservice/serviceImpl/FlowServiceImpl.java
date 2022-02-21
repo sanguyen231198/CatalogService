@@ -4,7 +4,6 @@ package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 import com.google.gson.reflect.TypeToken;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
-import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
 import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
 import com.humana.dhp.eventproc.service.catalogservice.model.FlowModel;
 import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +27,14 @@ public class FlowServiceImpl implements FlowService {
     private int pageNumberConfig;
 
     @Override
-    public BaseResponse importFlowDefinition(FlowModel flowModel) {
+    public CatalogResponse importFlowDefinition(FlowModel flowModel) {
+        //chan update flow => set flowId =0
         flowModel.setFlowId(0);
+        //validate input
+
+
+
+
         FlowEntity flowEntity = flowRepository.findOneByFlowName(flowModel.getFlowName());
         if (flowEntity != null){
             return ResponseUtil.getFailed("Flow is exists");
@@ -59,8 +63,12 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public CatalogResponse findOneByFlowId(long flowId) {
         FlowEntity flowEntity=  flowRepository.findOneByFlowId(flowId);
+        if (flowEntity == null){
+            return ResponseUtil.getFailed("Flow is not exists");
+        }
         flowEntity.getFlowVersions().stream().forEach(version ->{
             version.setFlow(null);
+            version.setContent(null);
         });
         FlowModel flowModel = GsonUtil.convert(flowEntity,FlowModel.class);
         CatalogResponse catalogResponse = (CatalogResponse) ResponseUtil.getSuccess();

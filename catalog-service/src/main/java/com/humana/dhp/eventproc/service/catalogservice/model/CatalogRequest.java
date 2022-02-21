@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CatalogRequest extends BaseRequest {
+public class CatalogRequest{
     private String requestId;
     private String requestTime;
     private FlowModel dataFlow;

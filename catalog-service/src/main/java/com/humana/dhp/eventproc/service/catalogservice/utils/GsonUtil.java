@@ -2,10 +2,6 @@ package com.humana.dhp.eventproc.service.catalogservice.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.humana.dhp.eventproc.service.catalogservice.model.BaseRequest;
-import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.FlowModel;
 
 public class GsonUtil {
     private static final Gson GSON = new Gson();

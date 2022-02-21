@@ -15,15 +15,15 @@ public class BaseController {
     FlowVersionService flowVersionService;
 
     @PostMapping("/import-flow")
-    public BaseResponse importFlow(@RequestBody CatalogRequest catalogRequest) {
+    public CatalogResponse importFlow(@RequestBody CatalogRequest catalogRequest) {
         System.out.println("@RequestBody CatalogRequest: " + GsonUtil.convertObjToString(catalogRequest));
-        BaseResponse baseResponse = flowService.importFlowDefinition(catalogRequest.getDataFlow());
+        CatalogResponse baseResponse = flowService.importFlowDefinition(catalogRequest.getDataFlow());
         return baseResponse;
     }
-//
+    //
     @PostMapping("/import-flow-version/flowId/{flowId}")
-    public BaseResponse importFlowVersion(@RequestBody FlowVersionRequest flowVersionRequest,@PathVariable long flowId) {
-        BaseResponse baseResponse = flowVersionService.importFlowVersion(flowId,flowVersionRequest.getFlowVersionModel());
+    public CatalogResponse importFlowVersion(@RequestBody FlowVersionRequest flowVersionRequest, @PathVariable long flowId) {
+        CatalogResponse baseResponse = flowVersionService.importFlowVersion(flowId,flowVersionRequest.getFlowVersionModel());
         return baseResponse;
     }
 
@@ -34,8 +34,8 @@ public class BaseController {
     }
 
     @GetMapping("/get-flow/flowId/{flowId}")
-    public BaseResponse getFlow(@PathVariable long flowId) {
-        BaseResponse baseResponse = flowService.findOneByFlowId(flowId);
+    public CatalogResponse getFlow(@PathVariable long flowId) {
+        CatalogResponse baseResponse = flowService.findOneByFlowId(flowId);
         return baseResponse;
     }
 
