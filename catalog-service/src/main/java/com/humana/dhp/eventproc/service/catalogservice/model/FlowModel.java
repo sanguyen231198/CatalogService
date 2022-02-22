@@ -21,6 +21,7 @@ public class FlowModel {
     private String flowName;
     private String description;
     private Timestamp updateAt;
+    private String updatedBy;
     private int countVersion;
     private FlowVersionModel flowVersion;
     private Set<FlowVersionModel> flowVersions;

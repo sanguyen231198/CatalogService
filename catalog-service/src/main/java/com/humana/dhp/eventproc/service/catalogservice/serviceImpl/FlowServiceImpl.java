@@ -28,7 +28,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public CatalogResponse importFlowDefinition(FlowModel flowModel) {
-        //chan update flow => set flowId =0
+        //prevent update flow => set flowId =0
         flowModel.setFlowId(0);
         //validate input
 
