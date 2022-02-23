@@ -3,43 +3,44 @@ package com.humana.dhp.eventproc.service.catalogservice.controller;
 import com.humana.dhp.eventproc.service.catalogservice.model.*;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowVersionService;
-import com.humana.dhp.eventproc.service.catalogservice.utils.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
+
+
 
 @RestController
-@RequestMapping("catalog/")
+@RequestMapping("v1/catalog")
 public class BaseController {
     @Autowired
     FlowService flowService;
     @Autowired
     FlowVersionService flowVersionService;
 
-    @PostMapping("/import/flow")
-    public CatalogResponse importFlow(@RequestBody CatalogRequest catalogRequest) {
-        System.out.println("@RequestBody CatalogRequest: " + GsonUtil.convertObjToString(catalogRequest));
-        CatalogResponse baseResponse = flowService.importFlowDefinition(catalogRequest.getDataFlow());
-        return baseResponse;
+    @PostMapping("/flow")
+    @PreAuthorize("")
+    public CatalogResponse importFlow(@RequestBody FlowModel dataFlow) {
+//        System.out.println("@RequestBody CatalogRequest: " + GsonUtil.convertObjToString(dataFlow));
+        return flowService.importFlowDefinition(dataFlow);
     }
     //
-    @PostMapping("/import/flow/{flowId}")
-    public CatalogResponse importFlowVersion(@RequestBody FlowVersionRequest flowVersionRequest, @PathVariable long flowId) {
-        CatalogResponse baseResponse = flowVersionService.importFlowVersion(flowId,flowVersionRequest.getFlowVersionModel());
-        return baseResponse;
+    @PostMapping("/flow-version/{flowId}")
+    public CatalogResponse importFlowVersion(@RequestBody FlowVersionModel flowVersion, @PathVariable long flowId) {
+//        CatalogResponse baseResponse = flowVersionService.importFlowVersion(flowId,flowVersion);
+        return flowVersionService.importFlowVersion(flowId,flowVersion);
     }
 
-    @GetMapping("/get-all-flow")
-    public CatalogResponse getAllFlow(@RequestParam(name = "pageNumber", required = false)int pageNumber) {
-        CatalogResponse catalogResponse = flowService.findAll(pageNumber);
-        return catalogResponse;
+    @GetMapping("/flows")
+    public List<FlowModel> getAllFlow(@RequestParam(name = "pageNumber", required = false)int pageNumber) {
+        return flowService.findAll(pageNumber);
     }
 
-    @GetMapping("/get-flow/{flowId}")
-    public CatalogResponse getFlow(@PathVariable long flowId) {
-        CatalogResponse baseResponse = flowService.findOneByFlowId(flowId);
-        return baseResponse;
+    @GetMapping("/flow/{flowId}")
+    public FlowModel getFlow(@PathVariable long flowId) {
+//        CatalogResponse baseResponse = flowService.findOneByFlowId(flowId);
+        return flowService.findOneByFlowId(flowId);
     }
 
 }
