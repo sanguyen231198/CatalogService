@@ -1,6 +1,7 @@
 package com.humana.dhp.eventproc.service.catalogservice.entity;
 
 import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Objects;
 public class FlowVersionEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="flow_id",nullable = false)
+    @JoinColumn(name = "flow_id", nullable = false)
     private FlowEntity flow;
     @Id
     private int version;
@@ -43,9 +44,10 @@ public class FlowVersionEntity {
                 '}';
     }
 }
+
 @AllArgsConstructor
 @NoArgsConstructor
-class FlowVersionId implements Serializable{
+class FlowVersionId implements Serializable {
     private FlowEntity flow;
     private int version;
 

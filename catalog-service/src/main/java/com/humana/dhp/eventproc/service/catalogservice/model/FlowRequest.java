@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class CatalogRequest{
-    private String requestId;
-    private String requestTime;
-    private FlowModel dataFlow;
 
+public class FlowRequest {
+    private String flowName;
+    private String description;
+    private FlowVersionRequest dataFlow;
 }

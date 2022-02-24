@@ -1,18 +1,15 @@
 package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 
-
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
 import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.FlowVersionModel;
+import com.humana.dhp.eventproc.service.catalogservice.model.FlowVersionRequest;
 import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowVersionService;
 import com.humana.dhp.eventproc.service.catalogservice.utils.GsonUtil;
 import com.humana.dhp.eventproc.service.catalogservice.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,14 +22,14 @@ public class FlowVersionServiceImpl implements FlowVersionService {
     FlowService flowService;
 
     @Override
-    public CatalogResponse importFlowVersion(long flowId, FlowVersionModel flowVersionModel) {
+    public CatalogResponse importFlowVersion(long flowId, FlowVersionRequest flowVersionRequest) {
         FlowEntity flowEntity = flowRepository.findOneByFlowId(flowId);
-        if (flowEntity == null){
-            return ResponseUtil.getFailed("Flow "+ flowEntity.getFlowName() +" is not exists");
+        if (flowEntity == null) {
+            return ResponseUtil.getFailed("Flow " + flowEntity.getFlowName() + " is not exists");
         }
         Timestamp flowTimestamp = new Timestamp(System.currentTimeMillis());
-        FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowVersionModel, FlowVersionEntity.class);
-        int version = flowEntity.getFlowVersions().size()+1;
+        FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowVersionRequest, FlowVersionEntity.class);
+        int version = flowEntity.getFlowVersions().size() + 1;
         flowVersionEntity.setVersion(version);
         flowVersionEntity.setUpdateAt(flowTimestamp);
 //        SecurityContext securityContext = SecurityContextHolder.getContext();

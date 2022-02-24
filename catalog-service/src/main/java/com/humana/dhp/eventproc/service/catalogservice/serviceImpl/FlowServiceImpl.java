@@ -1,11 +1,12 @@
 package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 
-
 import com.google.gson.reflect.TypeToken;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
 import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
+import com.humana.dhp.eventproc.service.catalogservice.model.FlowDetailModel;
 import com.humana.dhp.eventproc.service.catalogservice.model.FlowModel;
+import com.humana.dhp.eventproc.service.catalogservice.model.FlowRequest;
 import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
 import com.humana.dhp.eventproc.service.catalogservice.utils.GsonUtil;
@@ -14,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -29,19 +28,15 @@ public class FlowServiceImpl implements FlowService {
     private int pageNumberConfig;
 
     @Override
-    public CatalogResponse importFlowDefinition(FlowModel flowModel) {
+    public CatalogResponse importFlowDefinition(FlowRequest flowRequest) {
         //prevent update flow => set flowId =0
-        flowModel.setFlowId(0);
+//        flowModel.setFlowId(0);
         //validate input
-
-
-
-
-        FlowEntity flowEntity = flowRepository.findOneByFlowName(flowModel.getFlowName());
-        if (flowEntity != null){
+        FlowEntity flowEntity = flowRepository.findOneByFlowName(flowRequest.getFlowName());
+        if (flowEntity != null) {
             return ResponseUtil.getFailed("DataFlow already exists");
         }
-        flowEntity = GsonUtil.convert(flowModel, FlowEntity.class);
+        flowEntity = GsonUtil.convert(flowRequest, FlowEntity.class);
         Timestamp flowTimestamp = new Timestamp(System.currentTimeMillis());
         flowEntity.setCreatedAt(flowTimestamp);
         flowEntity.setCountVersion(1);
@@ -50,7 +45,7 @@ public class FlowServiceImpl implements FlowService {
 //        flowEntity.setCreatedBy(securityContext.getAuthentication().getName());
 //        flowEntity.setUpdatedBy(securityContext.getAuthentication().getName());
 
-        FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowModel.getFlowVersion(), FlowVersionEntity.class);
+        FlowVersionEntity flowVersionEntity = GsonUtil.convert(flowRequest.getDataFlow(), FlowVersionEntity.class);
         flowVersionEntity.setVersion(1);
         flowVersionEntity.setUpdateAt(flowTimestamp);
 //        flowVersionEntity.setUpdatedBy(securityContext.getAuthentication().getName());
@@ -64,33 +59,24 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public FlowModel findOneByFlowId(long flowId) {
-        FlowEntity flowEntity=  flowRepository.findOneByFlowId(flowId);
-//        if (flowEntity == null){
-//            return ResponseUtil.getFailed("Flow is not exists");
-//        }
-        flowEntity.getFlowVersions().stream().forEach(version ->{
+    public FlowDetailModel findOneByFlowId(long flowId) {
+        FlowEntity flowEntity = flowRepository.findOneByFlowId(flowId);
+        flowEntity.getFlowVersions().stream().forEach(version -> {
             version.setFlow(null);
-            version.setContent(null);
         });
-//        FlowModel flowModel = GsonUtil.convert(flowEntity,FlowModel.class);
-//        CatalogResponse catalogResponse = (CatalogResponse) ResponseUtil.getSuccess("");
-//        catalogResponse.setDataFlow(flowModel);
-        return GsonUtil.convert(flowEntity,FlowModel.class);
+        return GsonUtil.convert(flowEntity, FlowDetailModel.class);
     }
 
     @Override
     public List<FlowModel> findAll(int pageNumber) {
         pageNumber--;
-        Page<FlowEntity> flowEntitiesPage =  flowRepository.findAll(PageRequest.of(pageNumber, pageNumberConfig));
+        Page<FlowEntity> flowEntitiesPage = flowRepository.findAll(PageRequest.of(pageNumber, pageNumberConfig));
         List<FlowEntity> flowEntities = flowEntitiesPage.getContent();
-        flowEntities.stream().forEach(flow ->{
+        flowEntities.stream().forEach(flow -> {
             flow.setFlowVersions(null);
         });
-//        List<FlowModel> flowModels = GsonUtil.convert(flowEntities, new TypeToken<List<FlowModel>>(){});
-//        CatalogResponse catalogResponse = (CatalogResponse) ResponseUtil.getSuccess("");
-//        catalogResponse.setDataFlows(flowModels);
-        return GsonUtil.convert(flowEntities, new TypeToken<List<FlowModel>>(){});
+        return GsonUtil.convert(flowEntities, new TypeToken<List<FlowModel>>() {
+        });
     }
 
 

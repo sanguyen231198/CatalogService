@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,7 +14,5 @@ import java.util.List;
 public class CatalogResponse {
     private String responseCode;
     private String message;
-    private FlowModel dataFlow;
-    private List<FlowModel> dataFlows;
 
 }

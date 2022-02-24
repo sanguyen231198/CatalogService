@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FlowVersionRequest {
-    private String requestId;
-    private String requestTime;
-    private FlowVersionModel flowVersionModel;
+    private String comment;
+    private byte[] content;
 }
