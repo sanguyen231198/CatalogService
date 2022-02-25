@@ -2,7 +2,7 @@ package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
-import com.humana.dhp.eventproc.service.catalogservice.model.CatalogResponse;
+import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
 import com.humana.dhp.eventproc.service.catalogservice.model.FlowVersionRequest;
 import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
@@ -22,7 +22,7 @@ public class FlowVersionServiceImpl implements FlowVersionService {
     FlowService flowService;
 
     @Override
-    public CatalogResponse importFlowVersion(long flowId, FlowVersionRequest flowVersionRequest) {
+    public BaseResponse importFlowVersion(long flowId, FlowVersionRequest flowVersionRequest) {
         FlowEntity flowEntity = flowRepository.findOneByFlowId(flowId);
         if (flowEntity == null) {
             return ResponseUtil.getFailed("Flow " + flowEntity.getFlowName() + " is not exists");

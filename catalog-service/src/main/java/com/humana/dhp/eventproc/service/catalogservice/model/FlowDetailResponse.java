@@ -12,12 +12,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class FlowDetailModel {
+public class FlowDetailResponse {
     private long flowId;
     private String flowName;
     private String description;
     private Timestamp updateAt;
     private String updatedBy;
     private int countVersion;
-    private Set<FlowVersionModel> flowVersions;
+    private Set<FlowVersionResponse> flowVersions;
 }

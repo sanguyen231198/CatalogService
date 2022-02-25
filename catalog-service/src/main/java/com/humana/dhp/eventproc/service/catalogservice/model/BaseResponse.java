@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+import java.util.List;
+
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FlowVersionModel {
-    private int version;
-    private String comment;
-    private byte[] content;
+public class BaseResponse {
+    private String responseCode;
+    private String message;
+    private FlowDetailResponse dataFlow;
+    private List<FlowResponse> dataFlows;
+
+
 }
-
-
-
-

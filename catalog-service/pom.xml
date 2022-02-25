@@ -15,6 +15,7 @@
 	<description>Import flow definition, update flow definition version,...</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<azure.version>3.13.0</azure.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -27,8 +28,16 @@
 		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
+<!--			<artifactId>spring-boot-starter-oauth2-client</artifactId>-->
 <!--		</dependency>-->
+		<dependency>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>azure-spring-boot-starter-active-directory</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -80,7 +89,17 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.azure.spring</groupId>
+				<artifactId>azure-spring-boot-bom</artifactId>
+				<version>${azure.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
