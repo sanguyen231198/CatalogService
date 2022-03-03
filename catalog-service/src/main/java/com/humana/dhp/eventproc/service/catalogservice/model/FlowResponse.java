@@ -6,13 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+import java.sql.Timestamp;
+
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CatalogResponse {
-    private String responseCode;
-    private String message;
+public class FlowResponse {
+    private String flowName;
+    private Timestamp updateAt;
+    private int countVersion;
+
 
 }
+
+
+
+

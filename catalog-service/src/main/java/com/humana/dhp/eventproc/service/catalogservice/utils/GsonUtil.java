@@ -5,7 +5,9 @@ import com.google.gson.reflect.TypeToken;
 
 public class GsonUtil {
     private static final Gson GSON = new Gson();
+    private GsonUtil(){
 
+    }
     public static <T> T convert(Object o, Class<T> clazz) {
         try {
             String json = GSON.toJson(o);

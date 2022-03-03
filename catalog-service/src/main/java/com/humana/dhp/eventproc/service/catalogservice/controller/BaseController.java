@@ -6,7 +6,9 @@ import com.humana.dhp.eventproc.service.catalogservice.service.FlowVersionServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/catalog")
@@ -16,24 +18,30 @@ public class BaseController {
     @Autowired
     FlowVersionService flowVersionService;
 
-    @PostMapping("/flow")
-    public CatalogResponse importFlow(@RequestBody FlowRequest dataFlow) {
-//        System.out.println("@RequestBody CatalogRequest: " + GsonUtil.convertObjToString(dataFlow));
+    @PostMapping("/flows")
+    public BaseResponse importFlow(@RequestBody FlowRequest dataFlow) {
         return flowService.importFlowDefinition(dataFlow);
     }
 
-    @PostMapping("/flow-version/{flowId}")
-    public CatalogResponse importFlowVersion(@RequestBody FlowVersionRequest flowVersion, @PathVariable long flowId) {
+    @PostMapping("/flow-versions/{flowId}")
+    public BaseResponse importFlowVersion(@RequestBody FlowVersionRequest flowVersion, @PathVariable long flowId) {
         return flowVersionService.importFlowVersion(flowId, flowVersion);
     }
 
     @GetMapping("/flows")
-    public List<FlowModel> getAllFlow(@RequestParam(name = "pageNumber", required = false) int pageNumber) {
-        return flowService.findAll(pageNumber);
+    public List<FlowResponse> getAllFlow(@RequestParam(name = "pageNumber", required = false) Optional<String> pageNumber) {
+        try {
+            String pageNum = pageNumber.orElse("0");
+            int page = Integer.valueOf(pageNum);
+            return flowService.findAll(page);
+        } catch (Exception ex) {
+            //log ex
+            return Collections.emptyList();
+        }
     }
 
-    @GetMapping("/flow/{flowId}")
-    public FlowDetailModel getFlow(@PathVariable long flowId) {
+    @GetMapping("/flows/{flowId}")
+    public FlowDetailResponse getFlow(@PathVariable long flowId) {
         return flowService.findOneByFlowId(flowId);
     }
 
