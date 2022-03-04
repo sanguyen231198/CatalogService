@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Entity
@@ -17,9 +18,9 @@ import java.util.Set;
 @ToString
 public class FlowEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = "flow_id")
-    private long flowId;
+    private UUID flowId;
     @Column(name = "flow_name")
     private String flowName;
     private String description;

@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class FlowRequest {
     private String flowName;
     private String description;

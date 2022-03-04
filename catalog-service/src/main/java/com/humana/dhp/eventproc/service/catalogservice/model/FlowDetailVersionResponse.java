@@ -9,21 +9,16 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FlowResponse {
+public class FlowDetailVersionResponse {
     private UUID flowId;
-    private String flowName;
+    private int version;
+    private String comment;
+    private byte[] content;
     private Timestamp updateAt;
-    private int countVersion;
-
-
+    private String updatedBy;
 }
-
-
-
-

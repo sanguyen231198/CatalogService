@@ -6,14 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BaseResponse {
+public class APIResponse {
     private String message;
-    private String flowId;
-    private int version;
+    private UUID flowId;
+    private Integer version;
+    private FlowDetailResponse dataFlow;
+    private List<FlowResponse> dataFlows;
+    private Pagination pagination;
+    private List<FlowVersionResponse> data;
+    private FlowDetailVersionResponse flowVersion;
 
 }

@@ -3,10 +3,7 @@ package com.humana.dhp.eventproc.service.catalogservice.serviceImpl;
 import com.google.gson.reflect.TypeToken;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowEntity;
 import com.humana.dhp.eventproc.service.catalogservice.entity.FlowVersionEntity;
-import com.humana.dhp.eventproc.service.catalogservice.model.BaseResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.FlowDetailResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.FlowResponse;
-import com.humana.dhp.eventproc.service.catalogservice.model.FlowRequest;
+import com.humana.dhp.eventproc.service.catalogservice.model.*;
 import com.humana.dhp.eventproc.service.catalogservice.repository.FlowRepository;
 import com.humana.dhp.eventproc.service.catalogservice.service.FlowService;
 import com.humana.dhp.eventproc.service.catalogservice.utils.GsonUtil;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FlowServiceImpl implements FlowService {
@@ -28,13 +26,10 @@ public class FlowServiceImpl implements FlowService {
     private int pageNumberConfig;
 
     @Override
-    public BaseResponse importFlowDefinition(FlowRequest flowRequest) {
-        //prevent update flow => set flowId =0
-//        flowModel.setFlowId(0);
-        //validate input
+    public APIResponse importFlowDefinition(FlowRequest flowRequest) {
         FlowEntity flowEntity = flowRepository.findOneByFlowName(flowRequest.getFlowName());
         if (flowEntity != null) {
-            return ResponseUtil.getFailed("DataFlow already exists");
+            return ResponseUtil.getMessage("DataFlow already exists");
         }
         flowEntity = GsonUtil.convert(flowRequest, FlowEntity.class);
         Timestamp flowTimestamp = new Timestamp(System.currentTimeMillis());
@@ -50,40 +45,40 @@ public class FlowServiceImpl implements FlowService {
         flowVersionEntity.setUpdateAt(flowTimestamp);
 //        flowVersionEntity.setUpdatedBy(securityContext.getAuthentication().getName());
         flowVersionEntity.setFlow(flowEntity);
-        System.out.println("FlowVersionEntity: " + flowVersionEntity.toString());
-
         flowEntity.getFlowVersions().add(flowVersionEntity);
         flowRepository.save(flowEntity);
-        return ResponseUtil.getSuccess("DataFlow import successfully");
+        return ResponseUtil.importFlowSuccess("DataFlow import successfully", flowEntity.getFlowId());
 
     }
 
     @Override
-    public FlowDetailResponse findOneByFlowId(long flowId) {
+    public APIResponse findOneByFlowId(UUID flowId) {
         FlowEntity flowEntity = flowRepository.findOneByFlowId(flowId);
+        if (flowEntity == null) {
+            return ResponseUtil.getMessage("FLow not found!!!");
+        }
         flowEntity.getFlowVersions().stream().forEach(version -> {
             version.setFlow(null);
         });
-        return GsonUtil.convert(flowEntity, FlowDetailResponse.class);
+        return ResponseUtil.getFlowSuccess(GsonUtil.convert(flowEntity, FlowDetailResponse.class));
     }
 
     @Override
-    public List<FlowResponse> findAll(int pageNumber) {
-        pageNumber--;
+    public APIResponse findAll(int page, int pageSize) {
         Page<FlowEntity> flowEntitiesPage;
         List<FlowEntity> flowEntities;
-        if (pageNumber < 0)
-            flowEntities = flowRepository.findAll();
-        else {
-            flowEntitiesPage = flowRepository.findAll(PageRequest.of(pageNumber, pageNumberConfig));
-            flowEntities = flowEntitiesPage.getContent();
+        if (page == 0 && pageSize == 0) {
+            return ResponseUtil.getMessage("Page and PageSize not empty");
         }
+        flowEntitiesPage = flowRepository.findAll(PageRequest.of(page - 1, pageSize));
+        flowEntities = flowEntitiesPage.getContent();
+
         flowEntities.stream().forEach(flow -> {
             flow.setFlowVersions(null);
         });
-        return GsonUtil.convert(flowEntities, new TypeToken<List<FlowResponse>>() {
+        List<FlowResponse> flowResponses = GsonUtil.convert(flowEntities, new TypeToken<List<FlowResponse>>() {
         });
+        return ResponseUtil.getFlowsSuccess(new Pagination(page, pageSize, flowRepository.findAll().size()), flowResponses);
     }
-
 
 }

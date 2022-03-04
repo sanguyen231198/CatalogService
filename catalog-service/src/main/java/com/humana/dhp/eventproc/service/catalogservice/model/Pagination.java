@@ -11,12 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FlowVersionModel {
-    private int version;
-    private String comment;
-    private byte[] content;
+public class Pagination {
+    private int page;
+    private int pageSize;
+    private int total;
 }
-
-
-
-
