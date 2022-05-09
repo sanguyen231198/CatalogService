@@ -9,6 +9,7 @@ import com.humana.dhp.eventproc.service.catalogservice.service.FlowVersionServic
 import com.humana.dhp.eventproc.service.catalogservice.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -35,6 +36,7 @@ public class BaseController extends ExceptionController {
     }
 
     @GetMapping("/flows")
+//    @PreAuthorize("hasRole('ROLE_group1')")
     public ResponseEntity<Object> getFlows(@RequestParam(required = false) Optional<String> page, @RequestParam(required = false) Optional<String> pageSize) {
         try {
 //            String pageNum = page.orElse("0");

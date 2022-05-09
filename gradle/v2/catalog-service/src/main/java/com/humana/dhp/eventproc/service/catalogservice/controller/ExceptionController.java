@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExceptionController {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> badRequestExceptionHandler(BadRequestException e){
-        log.error("uiuiuiuiuiuiuiu"+e.getMessage());
+        log.error("Message: "+e.getMessage());
         return ResponseUtil.badRequest(e.getMessage());
     }
 }
